@@ -2,8 +2,10 @@ package com.example.com_us.data.di
 
 import com.example.com_us.data.service.AuthService
 import com.example.com_us.data.service.HomeService
+import com.example.com_us.data.service.LikeService
 import com.example.com_us.data.service.ProfileService
 import com.example.com_us.data.service.QuestionService
+import com.example.com_us.data.service.TokenService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -31,7 +33,15 @@ object ServiceModule {
         retrofit.create(QuestionService::class.java)
     @Provides
     @Singleton
-
     fun provideAuthService(retrofit: Retrofit): AuthService =
         retrofit.create(AuthService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideLikeService(retrofit : Retrofit) : LikeService = retrofit.create(LikeService::class.java)
+
+
+    @Provides
+    @Singleton
+    fun provideTokenService(retrofit: Retrofit) : TokenService = retrofit.create(TokenService::class.java)
 }

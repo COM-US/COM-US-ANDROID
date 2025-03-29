@@ -1,4 +1,4 @@
-package com.example.com_us.data.default_repository
+package com.example.com_us.data.repository.impl
 
 import com.example.com_us.base.data.NetworkError
 import com.example.com_us.data.model.question.request.RequestAnswerRequest
@@ -10,9 +10,10 @@ import com.example.com_us.data.model.question.response.question.ResponseQuestion
 import com.example.com_us.data.repository.QuestionRepository
 import com.example.com_us.data.default_source.DefaultQuestionDataSource
 import com.example.com_us.base.data.toResult
+import com.example.com_us.data.model.question.request.DetailQuestionRequest
 import javax.inject.Inject
 
-class DefaultQuestionRepository @Inject constructor(
+class QuestionRepositoryImpl @Inject constructor(
     private val defaultQuestionDataSource: DefaultQuestionDataSource
 )  : QuestionRepository {
    override suspend fun getQuestionListByCate(category: String): Result<List<ResponseQuestionDto>> {
@@ -22,9 +23,9 @@ class DefaultQuestionRepository @Inject constructor(
             Result.failure(NetworkError.HttpException(e.message.toString()))
         }
     }
-   override suspend fun getQuestionDetail(questionId: Long): Result<ResponseQuestionDetailDto> {
+   override suspend fun getQuestionDetail(body: DetailQuestionRequest): Result<ResponseQuestionDetailDto> {
        return try{
-           defaultQuestionDataSource.getQuestionDetail(questionId).toResult()
+           defaultQuestionDataSource.getQuestionDetail(body).toResult()
        } catch (e: Exception) {
            Result.failure(NetworkError.HttpException(e.message.toString()))
        }

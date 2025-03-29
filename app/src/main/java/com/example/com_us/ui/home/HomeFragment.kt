@@ -9,6 +9,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
@@ -18,11 +19,12 @@ import com.example.com_us.data.model.home.Block
 import com.example.com_us.data.model.home.Category
 import com.example.com_us.databinding.FragmentHomeBinding
 import com.example.com_us.ui.base.UiState
-import com.example.com_us.ui.question.theme.ThemeQuestionListActivity
+import com.example.com_us.ui.login.LoginActivity
 import com.example.com_us.util.ColorMatch
 import com.example.com_us.util.ThemeType
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @AndroidEntryPoint
 class HomeFragment :
@@ -34,40 +36,44 @@ class HomeFragment :
 
     private val homeViewModel: HomeViewModel by viewModels()
 
-//    private val scrollChangedListener =
-//        ViewTreeObserver.OnScrollChangedListener {
-//            binding.let {
-//                it.swiperefreshHome.isEnabled = (it.scrollviewHome.scrollY == 0)
-//            }
-//        }
 
     override fun onBindLayout() {
         super.onBindLayout()
+
+        Timber.d("여기가 홈 프래그먼트다! ")
+
+        lifecycleScope.launch {
+           viewModel.loginEvent.observe(this@HomeFragment, {
+               Timber.d("홈에서 로그인으로 이동")
+               val intent = Intent(requireContext(),LoginActivity::class.java)
+               startActivity(intent)
+           })
+        }
         blockList =
             listOf(
                 listOf(
-                    binding.viewConversation.viewHomeBlock00,
-                    binding.viewConversation.viewHomeBlock01,
-                    binding.viewConversation.viewHomeBlock02,
-                    binding.viewConversation.viewHomeBlock03,
+                    binding.viewConversation.block16,
+                    binding.viewConversation.block15,
+                    binding.viewConversation.block14,
+                    binding.viewConversation.block13,
                 ),
                 listOf(
-                    binding.viewConversation.viewHomeBlock10,
-                    binding.viewConversation.viewHomeBlock11,
-                    binding.viewConversation.viewHomeBlock12,
-                    binding.viewConversation.viewHomeBlock13,
+                    binding.viewConversation.block12,
+                    binding.viewConversation.block11,
+                    binding.viewConversation.block10,
+                    binding.viewConversation.block9,
                 ),
                 listOf(
-                    binding.viewConversation.viewHomeBlock20,
-                    binding.viewConversation.viewHomeBlock21,
-                    binding.viewConversation.viewHomeBlock22,
-                    binding.viewConversation.viewHomeBlock23,
+                    binding.viewConversation.block8,
+                    binding.viewConversation.block7 ,
+                    binding.viewConversation.block6,
+                    binding.viewConversation.block5,
                 ),
                 listOf(
-                    binding.viewConversation.viewHomeBlock30,
-                    binding.viewConversation.viewHomeBlock31,
-                    binding.viewConversation.viewHomeBlock32,
-                    binding.viewConversation.viewHomeBlock33,
+                    binding.viewConversation.block4,
+                    binding.viewConversation.block3,
+                    binding.viewConversation.block2,
+                    binding.viewConversation.block1,
                 ),
             )
 
@@ -218,10 +224,11 @@ class HomeFragment :
         theme: String,
         themeKor: String,
     ) {
-        val intent = Intent(context, ThemeQuestionListActivity::class.java)
-        intent.putExtra("theme", theme)
-        intent.putExtra("themeKor", themeKor)
-        startActivity(intent)
+        findNavController().navigate(R.id.themeQuestionListFragment)
+//        val intent = Intent(context, ThemeQuestionListActivity::class.java)
+//        intent.putExtra("theme", theme)
+//        intent.putExtra("themeKor", themeKor)
+//        startActivity(intent)
     }
 
 //    override fun onResume() {
